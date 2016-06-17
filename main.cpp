@@ -31,15 +31,15 @@ int main(int argc, char*argv[]){
 				if(opcionRobots == 1){
 					string numeroSerie,material;
 					double amperios,precio;
-					cout << "Numero de serie: ";
+					cout << "\tNumero de serie: ";
 					cin.ignore();
 					getline(cin,numeroSerie);
-					cout << "Material: ";
+					cout << "\tMaterial: ";
 					cin.ignore();
 					getline(cin,material);
-					cout << "Amperios: ";
+					cout << "\tAmperios: ";
 					cin >> amperios;
-					cout << "Precio: ";
+					cout << "\tPrecio: ";
 					cin >> precio;
 					creados.push_back(new trabajador(numeroSerie,amperios,material,precio));
 					cout << "Agregado :3" << endl;
@@ -47,15 +47,15 @@ int main(int argc, char*argv[]){
 				} else if(opcionRobots == 2){
 					string numeroSerie,material;
 					double amperios,precio;
-					cout << "Numero de serie: ";
+					cout << "\tNumero de serie: ";
 					cin.ignore();
 					getline(cin,numeroSerie);
-					cout << "Material: ";
+					cout << "\tMaterial: ";
 					cin.ignore();
 					getline(cin,material);
-					cout << "Amperios: ";
+					cout << "\tAmperios: ";
 					cin >> amperios;
-					cout << "Precio: ";
+					cout << "\tPrecio: ";
 					cin >> precio;
 					creados.push_back(new sirviente(numeroSerie,amperios,material,precio));
 					cout << "Agregado :3" << endl;
@@ -63,15 +63,15 @@ int main(int argc, char*argv[]){
 				} else if(opcionRobots == 3){
 					string numeroSerie,material;
 					double amperios,precio;
-					cout << "Numero de serie: ";
+					cout << "\tNumero de serie: ";
 					cin.ignore();
 					getline(cin,numeroSerie);
-					cout << "Material: ";
+					cout << "\tMaterial: ";
 					cin.ignore();
 					getline(cin,material);
-					cout << "Amperios: ";
+					cout << "\tAmperios: ";
 					cin >> amperios;
-					cout << "Precio: ";
+					cout << "\tPrecio: ";
 					cin >> precio;
 					creados.push_back(new abastecedor(numeroSerie,amperios,material,precio));
 					cout << "Agregado :3" << endl;
@@ -104,35 +104,44 @@ int main(int argc, char*argv[]){
 			cout << "Eliminado :3" << endl;
 			creados.erase(creados.begin() + eliminar);
 		} else if(opcion == 4){
-			for (int i = 0; i < creados.size(); i++){
-				cout << i << " " << creados.at(i) -> toString() << endl;
-			}
-			int comprar;
-			if (creados.at(comprar) -> getPrecio() > dinero){
-				if(creados.at(comprar) -> getAmperios() > amperios){
-					dinero -= creados.at(comprar) -> getPrecio();
-					amperios -= creados.at(comprar) -> getAmperios();
-					usuario.push_back(creados.at(comprar));
-					creados.erase(creados.begin() + comprar);
-					cout << "Comprado :3" << endl;
-				} else {
-					cout << "No tiene suficientes amperios" << endl;
-				}
+			if(creados.empty()){
+				cout << "No hay robots para comprar" << endl;
 			} else {
-				cout << "No tiene suficiente dinero" << endl;
+				for (int i = 0; i < creados.size(); i++)
+					cout << i << " " << creados.at(i) -> toString() << endl;
+				int comprar;
+				cout << "Posicion del robot que desea comprar: ";
+				cin >> comprar;
+				if (creados.at(comprar) -> getPrecio() < dinero){
+					if(creados.at(comprar) -> getAmperios() < amperios){
+						dinero -= creados.at(comprar) -> getPrecio();
+						amperios -= creados.at(comprar) -> getAmperios();
+						usuario.push_back(creados.at(comprar));
+						creados.erase(creados.begin() + comprar);
+						cout << "Comprado :3" << endl;
+					} else {
+						cout << "No tiene suficientes amperios" << endl;
+					}
+				} else {
+					cout << "No tiene suficiente dinero" << endl;
+				}
 			}
 		} else if(opcion == 5){
-			for (int i = 0; i < usuario.size(); i++)
+			if(usuario.empty()){
+				cout << "No tiene robots" << endl;
+			} else {
+				for (int i = 0; i < usuario.size(); i++)
 				cout << i << " " << usuario.at(i) -> toString() << endl;
-			int darFuncion;
-			cout << "Posicion del robot que desea dar funcion: ";
-			cin >> darFuncion;
-			double robots = usuario.size();
-			if(typeid(*usuario.at(darFuncion)) == typeid(abastecedor))
-				usuario.at(darFuncion) -> funcionRobots(robots,dinero);
-			else
-				usuario.at(darFuncion) -> funcionRobots(amperios,dinero);
-			dias++;
+				int darFuncion;
+				cout << "Posicion del robot que desea dar funcion: ";
+				cin >> darFuncion;
+				double robots = usuario.size();
+				if(typeid(*usuario.at(darFuncion)) == typeid(abastecedor))
+					usuario.at(darFuncion) -> funcionRobots(robots,dinero);
+				else
+					usuario.at(darFuncion) -> funcionRobots(amperios,dinero);
+				dias++;
+			}
 		} else if(opcion == 6){
 			for (int i = 0; i < usuario.size(); i++)
 				cout << i << " " << usuario.at(i) -> toString() << endl;
@@ -140,6 +149,7 @@ int main(int argc, char*argv[]){
 			cout << "Posicion del robot que quiere eliminar: ";
 			cin >> eliminar;
 			usuario.erase(usuario.begin() + eliminar);
+			cout << "Botado :3" << endl;
 		} else if (opcion > 7)
 			cout << "Esta opcion no existe" << endl;
 	}
